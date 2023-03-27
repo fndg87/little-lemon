@@ -5,5 +5,5 @@ Little Lemon restaurant Android App Capstone
 
 ## On-boarding screen
 
-![alt text](onboarding.jpg)
+![title](Images/onboarding.png)
  
