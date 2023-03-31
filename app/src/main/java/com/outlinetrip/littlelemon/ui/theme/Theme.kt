@@ -7,15 +7,14 @@ import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 
 private val DarkColorPalette = darkColors(
-    primary = Purple200,
+    primary = llYellow,
     primaryVariant = Purple700,
     secondary = Teal200
 )
 
 private val LightColorPalette = lightColors(
-    primary = Purple500,
-    primaryVariant = Purple700,
-    secondary = Teal200
+    primary = llYellow,
+    secondary = llBlack
 
     /* Other default colors to override
     background = Color.White,
@@ -37,7 +36,7 @@ fun LittlelemonTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Compo
 
     MaterialTheme(
         colors = colors,
-        typography = Typography,
+        typography = LittleLemonTypography,
         shapes = Shapes,
         content = content
     )
