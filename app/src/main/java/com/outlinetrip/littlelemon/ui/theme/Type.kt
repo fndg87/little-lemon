@@ -20,25 +20,30 @@ private val karla_regular = FontFamily(
 * */
 
 private val markazitext_regular = FontFamily(
-    Font(R.font.MarkaziText_Regular)
+    Font(R.font.markazitext_regular)
 )
 
 
 // Set of Material typography styles to start with
 val LittleLemonTypography = Typography(
+    h1 = TextStyle(
+        fontWeight = FontWeight.Light,
+        fontSize = 26.sp,
+        letterSpacing = (-1.5).sp
+    ),
     body1 = TextStyle(
         fontFamily = markazitext_regular,
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp
     ),
     button = TextStyle(
-        fontFamily = markazitext_regular,
-        fontWeight = FontWeight.W500,
+        fontFamily = karla_regular,
+        fontWeight = FontWeight.W600,
         fontSize = 14.sp,
-        color = llWhite
+        color = llBlack
     ),
     caption = TextStyle(
-        fontFamily = karla_regular,
+        fontFamily = markazitext_regular,
         fontWeight = FontWeight.Normal,
         fontSize = 12.sp
     )
