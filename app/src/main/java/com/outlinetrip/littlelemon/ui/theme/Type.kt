@@ -34,17 +34,17 @@ val LittleLemonTypography = Typography(
     body1 = TextStyle(
         fontFamily = markazitext_regular,
         fontWeight = FontWeight.Normal,
-        fontSize = 16.sp
+        fontSize = 18.sp
     ),
     button = TextStyle(
         fontFamily = karla_regular,
         fontWeight = FontWeight.W600,
-        fontSize = 14.sp,
+        fontSize = 16.sp,
         color = llBlack
     ),
     caption = TextStyle(
         fontFamily = markazitext_regular,
         fontWeight = FontWeight.Normal,
-        fontSize = 12.sp
+        fontSize = 14.sp
     )
 )

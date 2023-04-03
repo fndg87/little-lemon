@@ -9,9 +9,12 @@ object SharedPreferencesCommons {
             .putString(key, value)
             .apply()
     }
-    fun saveStringBooleanKPInSharedPreference(key:String, value:Boolean, userSharedPreferences: SharedPreferences){
+    fun saveStringBooleanInSharedPreference(key:String, value:Boolean, userSharedPreferences: SharedPreferences){
         userSharedPreferences.edit()
             .putBoolean(key, value)
             .apply()
+    }
+    fun removeKeyInSharedPreferences(key:String,userSharedPreferences: SharedPreferences){
+        userSharedPreferences.edit().remove(key).apply()
     }
 }

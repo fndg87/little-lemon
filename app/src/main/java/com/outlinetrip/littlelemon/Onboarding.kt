@@ -18,8 +18,10 @@ import com.outlinetrip.littlelemon.ui.theme.LittlelemonTheme
 import com.outlinetrip.littlelemon.ui.theme.llWhite
 import com.outlinetrip.littlelemon.ui.theme.llYellow
 import android.content.SharedPreferences
+import android.widget.Toast
+import androidx.compose.ui.platform.LocalContext
 import com.outlinetrip.littlelemon.utils.FakeSharedPreferences
-import com.outlinetrip.littlelemon.utils.SharedPreferencesCommons.saveStringBooleanKPInSharedPreference
+import com.outlinetrip.littlelemon.utils.SharedPreferencesCommons.saveStringBooleanInSharedPreference
 import com.outlinetrip.littlelemon.utils.SharedPreferencesCommons.saveStringToStringInSharedPreference
 
 @Composable
@@ -56,6 +58,8 @@ fun OnBoardingHeader(){
 }
 @Composable
 fun OnBoardingForm(navController: NavHostController, userSharedPreferences: SharedPreferences) {
+    val context = LocalContext.current
+
     var firstName by remember {
         mutableStateOf(TextFieldValue(""))
     }
@@ -76,7 +80,7 @@ fun OnBoardingForm(navController: NavHostController, userSharedPreferences: Shar
 
             Spacer(modifier = Modifier.padding(5.dp))
             Text(text = "First name", style = MaterialTheme.typography.caption)
-            OutlinedTextField(
+            TextField(
                 value = firstName,
                 colors = TextFieldDefaults.textFieldColors(
                     backgroundColor = llWhite,
@@ -92,8 +96,9 @@ fun OnBoardingForm(navController: NavHostController, userSharedPreferences: Shar
                 )
 
             Spacer(modifier = Modifier.padding(5.dp))
+
             Text(text = "Last name", style = MaterialTheme.typography.caption)
-            OutlinedTextField(
+            TextField(
                 value = lastName,
                 colors = TextFieldDefaults.textFieldColors(
                     backgroundColor = llWhite,
@@ -108,10 +113,10 @@ fun OnBoardingForm(navController: NavHostController, userSharedPreferences: Shar
                     .fillMaxWidth()
             )
 
-
             Spacer(modifier = Modifier.padding(5.dp))
+
             Text(text = "Email", style = MaterialTheme.typography.caption)
-            OutlinedTextField(
+            TextField(
                 value = email,
                 colors = TextFieldDefaults.textFieldColors(
                     backgroundColor = llWhite,
@@ -129,11 +134,16 @@ fun OnBoardingForm(navController: NavHostController, userSharedPreferences: Shar
             Spacer(modifier = Modifier.padding(20.dp))
             Button(
                 onClick = {
-                    saveStringBooleanKPInSharedPreference("onboarded", true, userSharedPreferences)
-                    saveStringToStringInSharedPreference("firstname", firstName.text, userSharedPreferences)
-                    saveStringToStringInSharedPreference("lastname", lastName.text, userSharedPreferences)
-                    saveStringToStringInSharedPreference("email", email.text, userSharedPreferences)
-                    navController.navigate(Home.route)
+                    if (email.text.isBlank() || firstName.text.isBlank() || lastName.text.isBlank()){
+                        Toast.makeText(context, "Please make sure the First name, Last name and Email is provided.", Toast.LENGTH_LONG).show()
+                    }else{
+                        saveStringBooleanInSharedPreference("onboarded", true, userSharedPreferences)
+                        saveStringToStringInSharedPreference("firstname", firstName.text, userSharedPreferences)
+                        saveStringToStringInSharedPreference("lastname", lastName.text, userSharedPreferences)
+                        saveStringToStringInSharedPreference("email", email.text, userSharedPreferences)
+                        navController.navigate(Home.route)
+                    }
+
                           },
                 modifier = Modifier
                     .fillMaxWidth()

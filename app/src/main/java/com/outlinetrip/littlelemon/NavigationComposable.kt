@@ -10,11 +10,14 @@ import androidx.navigation.compose.rememberNavController
 fun NavigationComposable(getStartingScreenRoute: String, userSharedPreferences: SharedPreferences) {
     val navController = rememberNavController()
     NavHost(navController = navController , startDestination = getStartingScreenRoute ){
-        composable(OnBoarding.route){
+        composable(OnBoarding.route) {
             OnBoardingScreen(navController,userSharedPreferences)
         }
-        composable(Home.route){
+        composable(Home.route) {
             HomeScreen(navController,userSharedPreferences)
+        }
+        composable(Profile.route) {
+            ProfileScreen(navController,userSharedPreferences)
         }
     }
 }
