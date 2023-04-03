@@ -1,18 +1,17 @@
 package com.outlinetrip.littlelemon
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import com.outlinetrip.littlelemon.ui.theme.LittlelemonTheme
 
 class MainActivity : ComponentActivity() {
+    private val userSharedPreferences: SharedPreferences by lazy { getSharedPreferences("LittleLemonUser", MODE_PRIVATE) }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -22,22 +21,17 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    Greeting("Android")
+                    val getStartingScreenRoute: String = getStartDestinationScreenRoute(userSharedPreferences)
+                    NavigationComposable(getStartingScreenRoute, userSharedPreferences)
                 }
             }
         }
     }
-}
-
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    LittlelemonTheme {
-        Greeting("Android")
+    private fun getStartDestinationScreenRoute(userSharedPreferences: SharedPreferences): String {
+        val isOnBoarded = userSharedPreferences.getBoolean("onboarded", false)
+        return when {
+            isOnBoarded -> Home.route
+            else -> OnBoarding.route
+        }
     }
 }

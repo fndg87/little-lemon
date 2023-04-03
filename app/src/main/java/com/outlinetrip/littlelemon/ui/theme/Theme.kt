@@ -15,7 +15,7 @@ private val LightColorPalette = lightColors(
     primary = llYellow,
     primaryVariant = llYellow,
     secondary = llGreen,
-    background = llYellow,
+    background = llWhite,
     surface = llGreen
     /* Other default colors to override
     background = Color.White,

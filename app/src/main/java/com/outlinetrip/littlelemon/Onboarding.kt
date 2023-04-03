@@ -12,19 +12,22 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.outlinetrip.littlelemon.ui.theme.LittlelemonTheme
-import com.outlinetrip.littlelemon.ui.theme.llBlack
 import com.outlinetrip.littlelemon.ui.theme.llWhite
 import com.outlinetrip.littlelemon.ui.theme.llYellow
+import android.content.SharedPreferences
+import com.outlinetrip.littlelemon.utils.FakeSharedPreferences
+import com.outlinetrip.littlelemon.utils.SharedPreferencesCommons.saveStringBooleanKPInSharedPreference
+import com.outlinetrip.littlelemon.utils.SharedPreferencesCommons.saveStringToStringInSharedPreference
 
 @Composable
-fun OnBoarding(){
+fun OnBoardingScreen(navController: NavHostController, userSharedPreferences: SharedPreferences) {
     Column(modifier=Modifier.fillMaxWidth()) {
         OnBoardingHeader()
-        OnboardingForm()
+        OnBoardingForm(navController,userSharedPreferences)
     }
-
-
 }
 
 @Composable
@@ -52,7 +55,7 @@ fun OnBoardingHeader(){
         }
 }
 @Composable
-fun OnboardingForm(){
+fun OnBoardingForm(navController: NavHostController, userSharedPreferences: SharedPreferences) {
     var firstName by remember {
         mutableStateOf(TextFieldValue(""))
     }
@@ -125,7 +128,13 @@ fun OnboardingForm(){
 
             Spacer(modifier = Modifier.padding(20.dp))
             Button(
-                onClick = { /*TODO*/ },
+                onClick = {
+                    saveStringBooleanKPInSharedPreference("onboarded", true, userSharedPreferences)
+                    saveStringToStringInSharedPreference("firstname", firstName.text, userSharedPreferences)
+                    saveStringToStringInSharedPreference("lastname", lastName.text, userSharedPreferences)
+                    saveStringToStringInSharedPreference("email", email.text, userSharedPreferences)
+                    navController.navigate(Home.route)
+                          },
                 modifier = Modifier
                     .fillMaxWidth()
             ) {
@@ -133,15 +142,18 @@ fun OnboardingForm(){
             }
         }
     }
+
 }
+
+
 @Preview(
-    name = "Onboarding",
+    name = "OnBoarding",
     showBackground = true
 )
 @Composable
 fun PreviewOnboarding() {
     LittlelemonTheme() {
-        OnBoarding()
+        OnBoardingScreen(rememberNavController(), FakeSharedPreferences())
     }
 
 }
