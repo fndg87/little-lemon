@@ -10,13 +10,20 @@ import androidx.navigation.NavHostController
 
 @Composable
 fun HomeScreen(navController: NavHostController, userSharedPreferences: SharedPreferences) {
+    sendUnauthenticatedUserOut(navController, userSharedPreferences)
     Column() {
         Text(text = "Home Screen")
         Button(onClick = { navController.navigate(Profile.route) }) {
-            Text(text = "Home")
+            Text(text = "Profile")
         }
     }
 
+}
+
+fun sendUnauthenticatedUserOut(navController: NavHostController, userSharedPreferences: SharedPreferences){
+    if (!userSharedPreferences.getBoolean("onboarded",false)){
+        navController.navigate(OnBoarding.route)
+    }
 }
 
 @Preview(showBackground = true)

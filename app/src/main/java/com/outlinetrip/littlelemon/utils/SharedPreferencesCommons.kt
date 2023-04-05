@@ -4,6 +4,7 @@ import android.content.SharedPreferences
 
 object SharedPreferencesCommons {
 
+
     fun saveStringToStringInSharedPreference(key:String, value:String, userSharedPreferences: SharedPreferences){
         userSharedPreferences.edit()
             .putString(key, value)
