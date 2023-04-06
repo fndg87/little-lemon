@@ -13,3 +13,5 @@ val llLightPink= Color(0xFFFBDABB)
 // Highlight colors
 val llWhite = Color(0xFFEDEFEE)
 val llBlack = Color(0xFF333333)
+
+val llGrey = Color(0xFFC9C7C7)

@@ -5,4 +5,6 @@
         serves simple food and classic cocktails in a lively but casual environment.
         The restaurant features a locally-sourced menu with daily specials.
     </string>
+    <string name="main_city">Chicago</string>
+    <string name="ad_description_banner">We are a family-owned Mediterranean restaurant, focused on traditional recipes served with a modern twist</string>
 </resources>
