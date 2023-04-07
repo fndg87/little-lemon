@@ -1,6 +1,5 @@
 package com.outlinetrip.littlelemon
 
-import android.view.MenuItem
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Database
@@ -18,22 +17,25 @@ data class MenuItemRoom(
     val id: Int,
     val title: String,
     val description: String,
-    val price: Double,
-    val imageUrl: String,
+    val price: String,
+    val image: String,
     val category: String
 )
 
 @Dao
 interface MenuItemDao {
     @Insert
-    fun insertMenuItem(menuItem: MenuItemNetwork)
+    fun insertAllMenuItem(vararg menuItem: MenuItemRoom)
     @Query("SELECT * FROM menu_items")
-    fun getAllMenuItems() : LiveData<List<MenuItem>>
+    fun getAllMenuItems() : LiveData<List<MenuItemRoom>>
     @Delete
-    fun deleteMenuItem(menuItem: MenuItem)
+    fun deleteMenuItem(menuItem: MenuItemRoom)
+    @Query("SELECT (SELECT COUNT(*) FROM menu_items) == 0")
+    fun isEmpty(): Boolean
 }
 
 @Database(entities = [MenuItemRoom::class], version = 1)
-abstract class DatabaseConnection: RoomDatabase() {
-    abstract fun menuDao():MenuItemDao
+abstract class AppDatabase : RoomDatabase() {
+    abstract fun menuItemDao(): MenuItemDao
 }
+
