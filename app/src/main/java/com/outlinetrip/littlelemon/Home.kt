@@ -34,7 +34,7 @@ fun HomeScreen(
     userSharedPreferences: SharedPreferences,
     allMenuItems: List<MenuItemRoom>
 ) {
-    //    sendUnauthenticatedUserOut(navController, userSharedPreferences)
+    sendUnauthenticatedUserOut(navController, userSharedPreferences)
     var menuItems = allMenuItems
     var menuCategorySelected by remember { mutableStateOf("All") }
     var searchPhrase by remember { mutableStateOf("") }
@@ -42,7 +42,7 @@ fun HomeScreen(
     val onTextFieldValueChange = {searchPhraseValue:String-> searchPhrase = searchPhraseValue}
 
     Column {
-        OnBoardingHeader()
+        LittleLemonHeader(navController)
         ShowHeroAndSearchBar(onTextFieldValueChange)
         Spacer(modifier = Modifier.padding(5.dp))
         ShowCategoryFilterButtons(onCategoryButtonClick)

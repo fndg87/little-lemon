@@ -20,10 +20,11 @@ import com.outlinetrip.littlelemon.ui.theme.llWhite
 import com.outlinetrip.littlelemon.ui.theme.llYellow
 import android.content.SharedPreferences
 import android.widget.Toast
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
-import com.outlinetrip.littlelemon.utils.FakeSharedPreferences
-import com.outlinetrip.littlelemon.utils.SharedPreferencesCommons
 import com.outlinetrip.littlelemon.utils.SharedPreferencesCommons.removeKeyInSharedPreferences
 import com.outlinetrip.littlelemon.utils.SharedPreferencesCommons.saveStringBooleanInSharedPreference
 import com.outlinetrip.littlelemon.utils.SharedPreferencesCommons.saveStringToStringInSharedPreference
@@ -31,14 +32,15 @@ import com.outlinetrip.littlelemon.utils.SharedPreferencesCommons.saveStringToSt
 @Composable
 fun OnBoardingScreen(navController: NavHostController, userSharedPreferences: SharedPreferences) {
     Column(modifier=Modifier.fillMaxWidth()) {
-        OnBoardingHeader()
+        LittleLemonHeader(navController)
         LetsGetToKnowYou()
         OnBoardingForm(navController,userSharedPreferences)
     }
 }
 
 @Composable
-fun OnBoardingHeader(){
+fun LittleLemonHeader(navController: NavHostController){
+    val currentRoute = navController.currentBackStackEntry?.destination?.route
     Row(modifier=Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.Center
     ) {
@@ -48,6 +50,18 @@ fun OnBoardingHeader(){
             modifier = Modifier
                 .size(width = 300.dp, height = 100.dp)
         )
+        if (currentRoute == Home.route ){
+            Column(modifier=Modifier.padding(10.dp)) {
+                Image(painter = painterResource(id = R.drawable.profile), contentDescription = "",
+                    modifier = Modifier
+                        .size(60.dp)
+                        .clip(RoundedCornerShape(300.dp))
+                        .clickable { navController.navigate(Profile.route) }
+                )
+            }
+
+
+        }
     }
 }
 
@@ -191,7 +205,8 @@ private fun logout(navController: NavHostController, userSharedPreferences: Shar
 @Composable
 fun PreviewOnboarding() {
     LittlelemonTheme() {
-        OnBoardingScreen(rememberNavController(), FakeSharedPreferences())
+//        OnBoardingScreen(rememberNavController(), FakeSharedPreferences())
+        LittleLemonHeader(rememberNavController())
     }
 
 }
