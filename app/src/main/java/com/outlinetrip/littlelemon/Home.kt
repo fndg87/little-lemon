@@ -3,7 +3,6 @@ package com.outlinetrip.littlelemon
 import android.content.SharedPreferences
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -25,11 +24,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
-
-import com.outlinetrip.littlelemon.ui.theme.LittlelemonTheme
-import com.outlinetrip.littlelemon.ui.theme.llGrey
-import com.outlinetrip.littlelemon.ui.theme.llWhite
-import com.outlinetrip.littlelemon.ui.theme.llYellow
+import com.outlinetrip.littlelemon.ui.theme.*
 import com.outlinetrip.littlelemon.utils.FakeSharedPreferences
 
 
@@ -40,27 +35,35 @@ fun HomeScreen(
     allMenuItems: List<MenuItemRoom>
 ) {
     //    sendUnauthenticatedUserOut(navController, userSharedPreferences)
+    var menuItems = allMenuItems
+    var menuCategorySelected by remember { mutableStateOf("All") }
+    var searchPhrase by remember { mutableStateOf("") }
+    val onCategoryButtonClick = { selectedCategory:String -> menuCategorySelected=selectedCategory}
+    val onTextFieldValueChange = {searchPhraseValue:String-> searchPhrase = searchPhraseValue}
 
     Column {
         OnBoardingHeader()
-        ShowWhoAreWeAndSearchBar()
+        ShowHeroAndSearchBar(onTextFieldValueChange)
         Spacer(modifier = Modifier.padding(5.dp))
-        ShowCategoryFilterButtons()
+        ShowCategoryFilterButtons(onCategoryButtonClick)
         Divider(modifier = Modifier.padding(5.dp))
-        MenuItemsList(items = allMenuItems)
-    }
 
+        if (searchPhrase.isNotEmpty()){
+            menuItems = menuItems.filter { it.title.lowercase().contains(searchPhrase.lowercase()) }
+        }
+        MenuItemsList(items = filterByCategoryMenu(menuItems,menuCategorySelected))
+    }
 }
 
 @Composable
-fun ShowWhoAreWeAndSearchBar(){
+fun ShowHeroAndSearchBar(onTextFieldValueChange: (String) -> Unit) {
     Surface(modifier = Modifier.fillMaxWidth()) {
         Column() {
             Text(text = stringResource(R.string.brand_name), style = MaterialTheme.typography.h2, color= llYellow)
             Text(text = stringResource(R.string.main_city), style = MaterialTheme.typography.h1, color = llWhite)
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Column(modifier = Modifier.weight(5f)) {
-                    Text(text = stringResource(id = R.string.ad_description_banner), style = MaterialTheme.typography.body2, color= llWhite)
+                    Text(text = stringResource(id = R.string.ad_description_banner), style = MaterialTheme.typography.body2.copy(fontSize = 16.sp), color= llWhite)
                 }
                 Image(painter = painterResource(id = R.drawable.heroimage),
                     contentDescription = "Hero Image for banner",
@@ -69,15 +72,21 @@ fun ShowWhoAreWeAndSearchBar(){
                         .clip(RoundedCornerShape(40.dp)),
                 )
             }
+            var searchPhraseValue by remember { mutableStateOf("") }
             Column {
                 TextField(
-                    value = "",
-                    onValueChange = {},
+                    value = searchPhraseValue,
+                    onValueChange = {value ->
+                        run {
+                            searchPhraseValue = value;
+                            onTextFieldValueChange(searchPhraseValue)
+                        }
+                    },
                     label = { Text(text = "Enter search phrase")},
                     leadingIcon = { Icon( imageVector = Icons.Default.Search, contentDescription = "") },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(5.dp),
+                        .padding(15.dp),
                     colors = TextFieldDefaults.textFieldColors(
                         backgroundColor = llWhite,
                         cursorColor = Color.Black,
@@ -99,20 +108,29 @@ fun sendUnauthenticatedUserOut(navController: NavHostController, userSharedPrefe
 }
 
 @Composable
-fun ShowCategoryFilterButtons(){
-    val categories = listOf("Starters","Mains","Dessert","Drinks")
-    Text(text = "ORDER FOR DELIVERY!", fontWeight = FontWeight.Bold, fontSize = 30.sp)
-    Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
+fun ShowCategoryFilterButtons(onCategoryButtonClick: (String) -> Unit) {
+    val categories = listOf("All","Starters","Mains","Dessert","Drinks")
+    Text(text = "ORDER FOR DELIVERY!", fontWeight = FontWeight.Bold, fontSize = 30.sp, modifier = Modifier.padding(top = 10.dp))
+    Row(horizontalArrangement = Arrangement.SpaceEvenly, modifier = Modifier.fillMaxWidth()) {
         categories.forEach {
-            Button(onClick = { /*TODO*/ },
+            Button(onClick = { onCategoryButtonClick(it) },
                 colors = ButtonDefaults.buttonColors(backgroundColor = llGrey),
-                modifier = Modifier.padding(6.dp),
+                modifier = Modifier.padding(1.dp),
                 shape = RoundedCornerShape(20.dp)) {
-                    Text(text = it, fontWeight = FontWeight.Bold)
+                    Text(text = it, fontWeight = FontWeight.Bold, fontSize = 14.sp)
             }
         }
     }
+}
 
+
+
+fun filterByCategoryMenu(menuList: List<MenuItemRoom>, category:String): List<MenuItemRoom> {
+    val menuItems: List<MenuItemRoom> = menuList.filter { it.category == category.lowercase() }
+    return when(menuItems.size){
+        0 -> menuList
+        else -> menuItems
+    }
 }
 
 @OptIn(ExperimentalGlideComposeApi::class)
@@ -127,40 +145,59 @@ private fun MenuItemsList(items: List<MenuItemRoom>) {
             items = items,
             itemContent = { menuItem ->
                 Row(
-                    verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    Column {
-                        Text(text=menuItem.title, fontWeight = FontWeight.Bold)
-                        Text(menuItem.description,
-                            fontSize = 18.sp,color = llGrey,
+                    Column() {
+                        Text(text = menuItem.title, fontSize = 28.sp,fontWeight = FontWeight.Bold)
+                        Text(
+                            menuItem.description,
+                            fontSize = 20.sp, color = llGreyTwo,
                             modifier = Modifier.fillMaxWidth(0.6f)
                         )
-                        Text("$%.2f".format(menuItem.price.toDouble()), fontWeight = FontWeight.Bold, color = llGrey,fontSize = 28.sp)
+                        Text(
+                            "$%.2f".format(menuItem.price.toDouble()),
+                            fontWeight = FontWeight.Bold,
+                            color = llGreyTwo,
+                            fontSize = 32.sp,
+                            modifier = Modifier.padding(5.dp)
+                        )
                     }
-
-                }
                 GlideImage(
                     model = menuItem.image,
                     contentDescription = menuItem.title,
                     alignment = Alignment.TopCenter,
-                    modifier = Modifier.size(100.dp).clip(RoundedCornerShape(10.dp)
+                    modifier = Modifier.clip(RoundedCornerShape(10.dp)
                     )
                 )
+                }
+
                 Divider()
             }
         )
     }
 
 }
-@Preview(showBackground = true, )
+@Preview(showBackground = true)
 @Composable
 fun PreviewHomeScreen(){
     LittlelemonTheme() {
         val allMenuItems = listOf(
-            MenuItemRoom(1,"Testing Title1", "testing description 1", "10.0", "https://github.com/Meta-Mobile-Developer-PC/Working-With-Data-API/blob/main/images/pasta.jpg","Starters"),
-            MenuItemRoom(2,"Testing Title2", "testing description 1", "20.0", "https://github.com/Meta-Mobile-Developer-PC/Working-With-Data-API/blob/main/images/pasta.jpg","Starters")
+            MenuItemRoom(
+                1,
+                "Testing Title1",
+                "testing description 1 testing description 1 testing description 1 testing description 1 testing description 1 testing description 1",
+                "10.0",
+                "https://github.com/Meta-Mobile-Developer-PC/Working-With-Data-API/blob/main/images/pasta.jpg",
+                "Starters"
+            ),
+            MenuItemRoom(
+                2,
+                "Testing Title2",
+                "testing description 1 testing description 1 testing description 1 testing description 1 testing description 1",
+                "20.0",
+                "https://github.com/Meta-Mobile-Developer-PC/Working-With-Data-API/blob/main/images/pasta.jpg",
+                "Starters"
+            )
         )
         HomeScreen(rememberNavController(), FakeSharedPreferences(), allMenuItems)
-
     }
 }

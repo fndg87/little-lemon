@@ -27,7 +27,7 @@ fun ProfileScreen(navController: NavHostController, userSharedPreferences: Share
 
 @Preview(showBackground = true)
 @Composable
-fun previewProfileScreen(){
+fun PreviewProfileScreen(){
     LittlelemonTheme() {
         ProfileScreen(rememberNavController(),FakeSharedPreferences())
     }

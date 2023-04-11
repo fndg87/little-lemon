@@ -15,3 +15,5 @@ val llWhite = Color(0xFFEDEFEE)
 val llBlack = Color(0xFF333333)
 
 val llGrey = Color(0xFFC9C7C7)
+
+val llGreyTwo = Color(0xFF636161)

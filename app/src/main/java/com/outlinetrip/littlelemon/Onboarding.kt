@@ -183,13 +183,6 @@ private fun logout(navController: NavHostController, userSharedPreferences: Shar
     removeKeyInSharedPreferences("email", userSharedPreferences)
     navController.navigate(OnBoarding.route)
 }
-@Composable
-fun Greeting(name: String) {
-    Column() {
-        Text(text = "toto")
-        Text(text = "guevo")
-    }
-}
 
 @Preview(
     name = "OnBoarding",
@@ -198,9 +191,7 @@ fun Greeting(name: String) {
 @Composable
 fun PreviewOnboarding() {
     LittlelemonTheme() {
-        Greeting("toto")
-//        OnBoardingScreen(rememberNavController(), FakeSharedPreferences())
-
+        OnBoardingScreen(rememberNavController(), FakeSharedPreferences())
     }
 
 }
