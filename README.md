@@ -2,13 +2,13 @@
 This project is the Little Lemon restaurant Android App Capstone for the Meta - Android Developer Certificate course.
 
 The scope and workflow for this initial version of this app is limited to the following steps: 
-1-) Onboard a user (Register) and persist data
-2-) Display the restaurants Menu (fetching data from the internet)
-3-) Display a Profile screen showing the persisted data.
+- Onboard a user (Register) and persist data
+- Display the restaurants Menu (fetching data from the internet)
+- Display a Profile screen showing the persisted data.
 
 # Application screens
 
-![title](assets/littlelemon.gif)
+<img src="assets/littlelemon.gif" width="250" height="250"/>
 
 ## Built with
 
