@@ -59,8 +59,6 @@ fun LittleLemonHeader(navController: NavHostController){
                         .clickable { navController.navigate(Profile.route) }
                 )
             }
-
-
         }
     }
 }

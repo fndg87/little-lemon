@@ -13,6 +13,8 @@ import com.outlinetrip.littlelemon.utils.FakeSharedPreferences
 
 @Composable
 fun ProfileScreen(navController: NavHostController, userSharedPreferences: SharedPreferences) {
+
+    sendUnauthenticatedUserOut(navController,userSharedPreferences)
     Column(modifier= Modifier.fillMaxWidth()) {
         LittleLemonHeader(navController)
         OnBoardingForm(navController = navController, userSharedPreferences = userSharedPreferences )
