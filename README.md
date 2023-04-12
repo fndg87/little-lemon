@@ -8,7 +8,7 @@ The scope and workflow for this initial version of this app is limited to the fo
 
 # Application screens
 
-<img src="assets/littlelemon.gif" width="250" height="250"/>
+<img src="assets/littlelemon.gif" width="450" height="450"/>
 
 ## Built with
 
